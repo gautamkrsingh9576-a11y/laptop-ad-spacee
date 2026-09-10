@@ -1,0 +1,15 @@
+WEBSITE UPDATE — Laptop Ad Space
+
+1. Unzip this package.
+2. In GitHub, open gautamkrsingh9576-a11y/laptop-ad-spacee.
+3. At the repository root choose Add file > Upload files.
+4. Upload ONLY index.html, style.css, script.js and support-qr.jpg from this package.
+5. Commit the changes to main. Your connected Vercel project should redeploy.
+6. Open your live website and refresh to see Support near the footer.
+
+The assets folder is included for a complete local copy. Your existing repository already has these assets; no need to upload the video or images again.
+
+TOTAL: User-provided ₹84,000+. This is a manual figure, not a live payment tracker.
+To update: edit index.html, find ₹84,000+ and change it; update the Last updated date too. Commit the change.
+QR: Original supplied image, unchanged. Scan it to verify the correct recipient before sharing the updated website.
+Social links: LinkedIn, X and Instagram are included.
