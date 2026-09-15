@@ -1,0 +1,339 @@
+);
+      setMessage("");
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  function handleSave() {
+    const cleanName = name.trim();
+    const cleanBio = bio.trim();
+
+    if (cleanName.length < 2) {
+      setMessage("Please enter your name.");
+      return;
+    }
+
+    if (cleanName.length > 40) {
+      setMessage("Name cannot be longer than 40 characters.");
+      return;
+    }
+
+    const profileData = {
+      name: cleanName,
+      birthday,
+      bio: cleanBio,
+      language,
+      profileImage,
+    };
+
+    try {
+      localStorage.setItem(
+        "newsTeen75Profile",
+        JSON.stringify(profileData)
+      );
+
+      setMessage("Profile saved successfully.");
+    } catch {
+      setMessage(
+        "Profile photo is too large. Try a smaller image."
+      );
+    }
+  }
+
+  const today = new Date().toISOString().split("T")[0];
+
+  return (
+    <main className="min-h-screen bg-[#050509] text-white flex justify-center">
+
+      <div className="relative w-full max-w-[430px] min-h-screen px-6 pt-10 pb-32 overflow-hidden">
+
+        {/* Background Glow */}
+        <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-red-600/20 blur-[100px]" />
+
+        {/* Header */}
+        <div className="relative z-10">
+
+          <p className="text-sm text-zinc-500">
+            Your account
+          </p>
+
+          <h1 className="mt-1 text-[32px] font-bold tracking-tight">
+            Your Profile
+          </h1>
+
+        </div>
+
+        {/* Profile Photo */}
+        <div className="relative z-10 mt-8 flex flex-col items-center">
+
+          <div className="relative">
+
+            <div className="w-28 h-28 rounded-full bg-[#171a20] border-2 border-[#ff3045]/40 overflow-hidden flex items-center justify-center">
+
+              {profileImage ? (
+                <img
+                  src={profileImage}
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-12 h-12 text-zinc-600"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M5 21C5 17 8 15 12 15C16 15 19 17 19 21" />
+                </svg>
+              )}
+
+            </div>
+
+            <label className="absolute bottom-0 right-0 w-10 h-10 rounded-full bg-[#ff3045] flex items-center justify-center cursor-pointer border-4 border-[#050509]">
+
+              <span className="text-lg">
+                +
+              </span>
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+
+            </label>
+
+          </div>
+
+          <p className="mt-3 text-xs text-zinc-600">
+            JPG or PNG • Max 1.5 MB
+          </p>
+
+        </div>
+
+        {/* Form */}
+        <div className="relative z-10 mt-8 space-y-5">
+
+          {/* Name */}
+          <div>
+
+            <label className="text-xs text-zinc-500">
+              Name
+            </label>
+
+            <div className="mt-2 h-14 rounded-[16px] bg-[#15181f] border border-white/10 px-4 flex items-center focus-within:border-[#ff3045]/70 transition">
+
+              <input
+                type="text"
+                value={name}
+                maxLength={40}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter your name"
+                className="w-full bg-transparent outline-none text-sm text-white placeholder:text-zinc-600"
+              />
+
+              <span className="text-[10px] text-zinc-600 ml-3">
+                {name.length}/40
+              </span>
+
+            </div>
+
+          </div>
+
+          {/* Birthday */}
+          <div>
+
+            <label className="text-xs text-zinc-500">
+              Birthday
+            </label>
+
+            <input
+              type="date"
+              value={birthday}
+              max={today}
+              onChange={(e) => setBirthday(e.target.value)}
+              className="mt-2 w-full h-14 rounded-[16px] bg-[#15181f] border border-white/10 px-4 outline-none text-sm text-zinc-300 focus:border-[#ff3045]/70 transition"
+            />
+
+          </div>
+
+          {/* Bio */}
+          <div>
+
+            <div className="flex justify-between">
+              <label className="text-xs text-zinc-500">
+                About you
+              </label>
+
+              <span className="text-[10px] text-zinc-600">
+                {bio.length}/120
+              </span>
+            </div>
+
+            <textarea
+              value={bio}
+              maxLength={120}
+              onChange={(e) => setBio(e.target.value)}
+              placeholder="A few words about you..."
+              rows={4}
+              className="mt-2 w-full resize-none rounded-[18px] bg-[#15181f] border border-white/10 p-4 outline-none text-sm leading-6 text-white placeholder:text-zinc-600 focus:border-[#ff3045]/70 transition"
+            />
+
+          </div>
+
+          {/* Language */}
+          <div>
+
+            <label className="text-xs text-zinc-500">
+              Preferred news language
+            </label>
+
+            <div className="mt-3 grid grid-cols-3 gap-2">
+
+              {["English", "हिंदी", "Hinglish"].map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => setLanguage(item)}
+                  className={`h-11 rounded-[14px] border text-sm transition ${
+                    language === item
+                      ? "bg-[#ff3045] border-[#ff3045] text-white"
+                      : "bg-[#15181f] border-white/10 text-zinc-500"
+                  }`}
+                >
+                  {item}
+                </button>
+              ))}
+
+            </div>
+
+          </div>
+
+          {/* Message */}
+          {message && (
+            <p
+              className={`text-xs ${
+                message.includes("successfully")
+                  ? "text-green-400"
+                  : "text-red-400"
+              }`}
+            >
+              {message}
+            </p>
+          )}
+
+          {/* Save */}
+          <button
+            type="button"
+            onClick={handleSave}
+            className="w-full h-14 rounded-[17px] bg-[#ff3045] font-semibold shadow-[0_10px_35px_rgba(255,48,69,0.22)] active:scale-[0.98] transition"
+          >
+            Save Profile
+          </button>
+
+        </div>
+
+        {/* Common Navigation */}
+        <BottomNav />
+
+      </div>
+
+    </main>
+  );
+}
+__NEWS75_FILE__
+
+mkdir -p "$ROOT/app/saved"
+cat > "$ROOT/app/saved/page.js" <<'__NEWS75_FILE__'
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import BottomNav from "../components/BottomNav";
+
+const initialArticles = [
+  {
+    id: 1,
+    category: "Technology",
+    title: "How AI is changing the future of work",
+    time: "1 day ago",
+    icon: "💻",
+  },
+  {
+    id: 2,
+    category: "Business",
+    title: "Indian startup raises ₹240 Cr for expansion",
+    time: "18 min ago",
+    icon: "📈",
+  },
+  {
+    id: 3,
+    category: "National",
+    title: "India announces a major new development plan",
+    time: "2 hours ago",
+    icon: "🇮🇳",
+  },
+  {
+    id: 4,
+    category: "Sports",
+    title: "India prepares for another major cricket clash",
+    time: "4 hours ago",
+    icon: "🏏",
+  },
+];
+
+export default function SavedPage() {
+  const [articles, setArticles] = useState(initialArticles);
+
+  function removeArticle(id) {
+    setArticles(
+      articles.filter((article) => article.id !== id)
+    );
+  }
+
+  return (
+    <main className="min-h-screen bg-[#050509] text-white flex justify-center">
+
+     <div className="relative w-full max-w-[430px] min-h-screen px-6 pt-10 pb-40 overflow-hidden">
+
+        {/* Background Glow */}
+        <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-red-600/20 blur-[100px]" />
+
+        {/* Header */}
+        <div className="relative z-10 flex items-center justify-between">
+
+          <Link
+            href="/home"
+            className="w-11 h-11 rounded-full bg-[#171a20] border border-white/10 flex items-center justify-center text-xl"
+          >
+            ←
+          </Link>
+
+          <h1 className="text-xl font-semibold">
+            Saved Articles
+          </h1>
+
+          <div className="w-11" />
+
+        </div>
+
+        {/* Heading */}
+        <div className="relative z-10 mt-8">
+          <p className="text-sm text-zinc-500">
+            Your personal reading list
+          </p>
+
+          <h2 className="mt-2 text-[30px] font-bold tracking-tight">
+            Read it later.
+          </h2>
+        </div>
+
+        {/* Empty State */}
+        {articles.length === 0 && (
+          <div className="relative z-10 mt-24 text-center">
+
+            <div className="mx-auto w-20 h-20 rou
