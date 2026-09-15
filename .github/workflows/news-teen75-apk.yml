@@ -30,6 +30,26 @@ jobs:
       - name: Generate News Teen75 project
         run: bash news-teen75-apk/setup-project.sh
 
+      - name: Repair generated feed source boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('news-teen75-generated/app/feed/page.js')
+          text = p.read_text(encoding='utf-8')
+          fixed, count = re.subn(
+              r'(</div>)\s*fill="none".*?</div>\s*(?=</section>)',
+              r'\1\n\n',
+              text,
+              count=1,
+              flags=re.S,
+          )
+          if count != 1:
+              raise SystemExit('Expected feed boundary fragment was not found')
+          p.write_text(fixed, encoding='utf-8')
+          print('Feed source repaired')
+          PY
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
