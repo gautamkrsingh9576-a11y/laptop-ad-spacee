@@ -1,0 +1,332 @@
+fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                >
+                  <path d="M7 17L17 7" />
+                  <path d="M10 7H17V14" />
+                </svg>
+
+              </button>
+
+            </div>
+
+          </section>
+        ))}
+
+      </div>
+
+      {/* Fixed Bottom Navigation */}
+      <BottomNav />
+
+    </main>
+  );
+}
+__NEWS75_FILE__
+
+mkdir -p "$ROOT/app"
+cat > "$ROOT/app/globals.css" <<'__NEWS75_FILE__'
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+__NEWS75_FILE__
+
+mkdir -p "$ROOT/app/home"
+cat > "$ROOT/app/home/page.js" <<'__NEWS75_FILE__'
+import Link from "next/link";
+import BottomNav from "../components/BottomNav";
+export default function HomePage() {
+  return (
+    <main className="min-h-screen bg-[#050509] text-white flex justify-center">
+      <div className="relative w-full max-w-[430px] min-h-screen px-6 pt-10 pb-28 overflow-hidden">
+
+        {/* Background glow */}
+        <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-red-600/20 blur-[100px]" />
+
+        {/* Header */}
+        <div className="relative z-10 flex items-center justify-between">
+          <h1 className="text-3xl font-bold tracking-tight">
+            News<span className="text-[#ff3045]">Teen75</span>
+          </h1>
+
+          <button className="w-11 h-11 rounded-full bg-[#171a20] border border-white/10 flex items-center justify-center">
+            <svg
+              viewBox="0 0 24 24"
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+            >
+              <circle cx="11" cy="11" r="6" />
+              <path d="M16 16L21 21" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Greeting */}
+        <div className="relative z-10 mt-8">
+          <p className="text-sm text-zinc-500">
+            Good morning
+          </p>
+
+          <h2 className="mt-1 text-[34px] font-bold tracking-tight">
+            Stay ahead today.
+          </h2>
+        </div>
+
+        {/* Categories */}
+        <div className="relative z-10 mt-7 flex gap-3 overflow-x-auto">
+          <Link
+  href="/feed"
+  className="shrink-0 px-5 py-3 rounded-full bg-[#ff3045] text-sm font-semibold"
+>
+  For You
+</Link>
+
+          <button className="shrink-0 px-5 py-3 rounded-full bg-[#171a20] border border-white/10 text-sm text-zinc-400">
+            India
+          </button>
+
+          <button className="shrink-0 px-5 py-3 rounded-full bg-[#171a20] border border-white/10 text-sm text-zinc-400">
+            Business
+          </button>
+
+          <button className="shrink-0 px-5 py-3 rounded-full bg-[#171a20] border border-white/10 text-sm text-zinc-400">
+            Tech
+          </button>
+        </div>
+
+        {/* Main Breaking Card */}
+        <section className="relative z-10 mt-7 h-[390px] rounded-[28px] overflow-hidden border border-white/10 bg-[#11141c]">
+
+          <div className="absolute inset-0 bg-gradient-to-b from-[#171c2a] via-[#121620] to-[#08090d]" />
+
+          <div className="absolute top-8 right-6 w-28 h-28 rounded-full bg-orange-500 shadow-[0_0_50px_rgba(249,115,22,0.45)]" />
+
+          <div className="absolute bottom-0 left-0 right-0 h-44 flex items-end gap-3 px-4 opacity-50">
+            <div className="w-10 h-28 bg-[#252b3a] rounded-t-md" />
+            <div className="w-12 h-20 bg-[#252b3a] rounded-t-md" />
+            <div className="w-14 h-32 bg-[#252b3a] rounded-t-md" />
+            <div className="w-12 h-24 bg-[#252b3a] rounded-t-md" />
+            <div className="w-10 h-36 bg-[#252b3a] rounded-t-md" />
+          </div>
+
+          <div className="absolute inset-0 p-6 flex flex-col justify-between">
+
+            <div>
+              <span className="inline-flex px-4 py-2 rounded-full bg-[#ff3045] text-xs font-bold shadow-[0_8px_30px_rgba(255,48,69,0.28)]">
+                BREAKING
+              </span>
+            </div>
+
+            <div>
+              <h3 className="text-[32px] leading-[1.05] font-bold max-w-[300px]">
+                India unveils a bold new technology mission
+              </h3>
+
+              <p className="mt-3 text-sm text-zinc-400">
+                2 min read&nbsp;&nbsp;•&nbsp;&nbsp;12K watching
+              </p>
+            </div>
+
+          </div>
+        </section>
+
+        {/* Second News Card */}
+        <section className="relative z-10 mt-5 p-5 rounded-[24px] bg-[#11141c] border border-white/10 flex items-center gap-4">
+
+          <div className="shrink-0 w-20 h-20 rounded-full bg-blue-500/80" />
+
+          <div>
+            <h3 className="text-lg font-semibold leading-tight">
+              Startup raises ₹240 Cr to expand across India
+            </h3>
+
+            <p className="mt-3 text-xs text-zinc-500">
+              Business&nbsp;&nbsp;•&nbsp;&nbsp;18 min ago
+            </p>
+          </div>
+
+        </section>
+
+        {/* Bottom Navigation */}
+<BottomNav />
+
+      </div>
+    </main>
+  );
+}
+
+function NavItem({ label, active = false, children }) {
+  return (
+    <button
+      className={`flex flex-col items-center gap-1 ${
+        active ? "text-[#ff3045]" : "text-zinc-500"
+      }`}
+    >
+      <svg
+        viewBox="0 0 24 24"
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {children}
+      </svg>
+
+      <span className="text-[10px]">
+        {label}
+      </span>
+    </button>
+  );
+}
+__NEWS75_FILE__
+
+mkdir -p "$ROOT/app"
+cat > "$ROOT/app/layout.js" <<'__NEWS75_FILE__'
+import "./globals.css";
+
+export const metadata = {
+  title: "News Teen75",
+  description: "Short, fast and personalized news for India.",
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" className="h-full antialiased">
+      <body className="min-h-full flex flex-col">{children}</body>
+    </html>
+  );
+}
+__NEWS75_FILE__
+
+mkdir -p "$ROOT/app/login"
+cat > "$ROOT/app/login/page.js" <<'__NEWS75_FILE__'
+"use client";
+
+import Image from "next/image";
+import { useState } from "react";
+import Link from "next/link";
+
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+
+  const validateEmail = (value) => {
+    const cleanEmail = value.trim();
+
+    if (!cleanEmail) {
+      return "Email address is required.";
+    }
+
+    if (cleanEmail.length > 50) {
+      return "Email cannot be more than 50 characters.";
+    }
+
+    if (cleanEmail.includes(" ")) {
+      return "Email cannot contain spaces.";
+    }
+
+    const emailPattern =
+      /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    if (!emailPattern.test(cleanEmail)) {
+      return "Please enter a valid email address.";
+    }
+
+    return "";
+  };
+
+  const handleEmailChange = (event) => {
+    const value = event.target.value;
+
+    if (value.length <= 50) {
+      setEmail(value);
+      setMessage("");
+
+      if (error) {
+        setError(validateEmail(value));
+      }
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const validationError = validateEmail(email);
+
+    if (validationError) {
+      setError(validationError);
+      setMessage("");
+      return;
+    }
+
+    setError("");
+    setMessage(
+      "Email verified. We will connect authentication in the next step."
+    );
+  };
+
+  const isEmailValid =
+    email.length > 0 && validateEmail(email) === "";
+
+  return (
+    <main className="min-h-screen bg-[#050509] text-white flex items-center justify-center px-4">
+      <div className="relative w-full max-w-[430px] min-h-screen flex flex-col px-6 py-10 overflow-hidden">
+
+        {/* Background glow */}
+        <div className="absolute -top-32 -right-24 w-72 h-72 rounded-full bg-red-600/20 blur-[100px]" />
+
+        {/* Brand */}
+        <div className="relative z-10 mt-4">
+          <h1 className="text-3xl font-bold tracking-tight">
+            News
+            <span className="text-[#ff3045]">
+              Teen75
+            </span>
+          </h1>
+        </div>
+
+        {/* Heading */}
+        <div className="relative z-10 mt-12">
+          <h2 className="text-[42px] leading-[1.05] font-bold tracking-tight">
+            Welcome back.
+          </h2>
+
+          <p className="mt-4 text-[15px] text-zinc-400">
+            Sign in for a personalised news universe.
+          </p>
+     
