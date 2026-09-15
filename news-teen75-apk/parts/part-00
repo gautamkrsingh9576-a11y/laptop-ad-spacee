@@ -1,0 +1,335 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="${GITHUB_WORKSPACE:-$(pwd)}/news-teen75-generated"
+rm -rf "$ROOT"
+mkdir -p "$ROOT"
+
+cat > "$ROOT/.gitignore" <<'__NEWS75_FILE__'
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+__NEWS75_FILE__
+
+mkdir -p "$ROOT/app/components"
+cat > "$ROOT/app/components/BottomNav.js" <<'__NEWS75_FILE__'
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+export default function BottomNav() {
+  const pathname = usePathname();
+
+  const isActive = (path) => {
+    if (path === "/home") {
+      return pathname === "/home" || pathname === "/feed";
+    }
+
+    return pathname === path;
+  };
+
+  const itemClass = (path) =>
+    `flex flex-col items-center justify-center gap-1 min-w-[52px] transition ${
+      isActive(path)
+        ? "text-[#ff3045]"
+        : "text-zinc-500 hover:text-zinc-300"
+    }`;
+
+  return (
+    <nav className="fixed z-50 bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-24px)] max-w-[398px] h-[76px] rounded-[24px] bg-[#11131a]/95 backdrop-blur-xl border border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.45)] flex items-center justify-around px-2">
+
+      {/* HOME */}
+      <Link
+        href="/home"
+        className={itemClass("/home")}
+        aria-current={isActive("/home") ? "page" : undefined}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          className="w-[21px] h-[21px]"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M4 11L12 4L20 11V20H14V14H10V20H4Z" />
+        </svg>
+
+        <span className="text-[10px] font-medium">
+          Home
+        </span>
+      </Link>
+
+      {/* SEARCH */}
+      <Link
+        href="/search"
+        className={itemClass("/search")}
+        aria-current={isActive("/search") ? "page" : undefined}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          className="w-[21px] h-[21px]"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="11" cy="11" r="6" />
+          <path d="M16 16L21 21" />
+        </svg>
+
+        <span className="text-[10px] font-medium">
+          Search
+        </span>
+      </Link>
+
+      {/* TOPICS */}
+      <Link
+        href="/topics"
+        className={itemClass("/topics")}
+        aria-current={isActive("/topics") ? "page" : undefined}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          className="w-[21px] h-[21px]"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <rect x="4" y="4" width="6" height="6" rx="1" />
+          <rect x="14" y="4" width="6" height="6" rx="1" />
+          <rect x="4" y="14" width="6" height="6" rx="1" />
+          <rect x="14" y="14" width="6" height="6" rx="1" />
+        </svg>
+
+        <span className="text-[10px] font-medium">
+          Topics
+        </span>
+      </Link>
+
+      {/* SAVED */}
+      <Link
+        href="/saved"
+        className={itemClass("/saved")}
+        aria-current={isActive("/saved") ? "page" : undefined}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          className="w-[21px] h-[21px]"
+          fill={isActive("/saved") ? "currentColor" : "none"}
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M6 4H18V21L12 17L6 21V4Z" />
+        </svg>
+
+        <span className="text-[10px] font-medium">
+          Saved
+        </span>
+      </Link>
+
+      {/* PROFILE */}
+      <Link
+        href="/profile"
+        className={itemClass("/profile")}
+        aria-current={isActive("/profile") ? "page" : undefined}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          className="w-[21px] h-[21px]"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="12" cy="8" r="4" />
+          <path d="M5 21C5 17 8 15 12 15C16 15 19 17 19 21" />
+        </svg>
+
+        <span className="text-[10px] font-medium">
+          Profile
+        </span>
+      </Link>
+
+    </nav>
+  );
+}
+__NEWS75_FILE__
+
+mkdir -p "$ROOT/app/feed"
+cat > "$ROOT/app/feed/page.js" <<'__NEWS75_FILE__'
+"use client";
+
+import BottomNav from "../components/BottomNav";
+const newsItems = [
+  {
+    id: 1,
+    category: "TECHNOLOGY",
+    title: "India's next giant leap starts here.",
+    description:
+      "A new space-tech mission could transform communication across the country.",
+    time: "8 min ago",
+    accent: "bg-orange-500",
+  },
+  {
+    id: 2,
+    category: "BUSINESS",
+    title: "Indian startup raises ₹240 Cr for expansion.",
+    description:
+      "The company plans to expand its services across major Indian cities.",
+    time: "18 min ago",
+    accent: "bg-blue-500",
+  },
+];
+
+export default function FeedPage() {
+  return (
+    <main className="h-screen bg-[#050509] text-white flex justify-center overflow-hidden">
+
+      {/* Reels Scroll Area */}
+     <div className="hide-scrollbar relative w-full max-w-[430px] h-screen overflow-y-auto snap-y snap-mandatory">
+
+        {newsItems.map((news) => (
+          <section
+            key={news.id}
+            className="relative h-screen snap-start snap-always overflow-hidden bg-[#0d1422]"
+          >
+
+            {/* Top Tabs */}
+            <div className="absolute z-30 top-0 left-0 right-0 h-24 bg-gradient-to-b from-black/80 to-transparent flex items-end justify-center gap-10 pb-4">
+
+              <button className="text-zinc-500 font-semibold">
+                Following
+              </button>
+
+              <button className="relative font-semibold">
+                For You
+
+                <span className="absolute -bottom-3 left-0 right-0 h-[3px] rounded-full bg-[#ff3045]" />
+              </button>
+
+            </div>
+
+            {/* Background */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#121b2d] via-[#101827] to-[#080a0f]" />
+
+            {/* Decorative visual */}
+            <div
+              className={`absolute top-36 right-8 w-28 h-28 rounded-full ${news.accent} shadow-[0_0_60px_rgba(249,115,22,0.35)]`}
+            />
+
+            {/* City shapes */}
+            <div className="absolute bottom-24 left-0 right-0 h-72 flex items-end gap-3 px-4 opacity-60">
+
+              <div className="w-12 h-36 bg-[#242a39] rounded-t-md" />
+              <div className="w-16 h-28 bg-[#242a39] rounded-t-md" />
+              <div className="w-14 h-48 bg-[#242a39] rounded-t-md" />
+              <div className="w-16 h-40 bg-[#242a39] rounded-t-md" />
+              <div className="w-14 h-52 bg-[#242a39] rounded-t-md" />
+
+            </div>
+
+            {/* Bottom dark gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+
+            {/* News Text */}
+            <div className="absolute z-20 left-6 right-20 bottom-32">
+
+              <span className="inline-flex px-4 py-2 rounded-full bg-[#ff3045] text-xs font-bold">
+                {news.category}
+              </span>
+
+              <h1 className="mt-5 text-[36px] leading-[1.05] font-bold tracking-tight">
+                {news.title}
+              </h1>
+
+              <p className="mt-4 text-sm leading-6 text-zinc-300">
+                {news.description}
+              </p>
+
+              <p className="mt-4 text-xs text-zinc-500">
+                News Teen75 &nbsp;•&nbsp; {news.time}
+              </p>
+
+            </div>
+
+            {/* Side Buttons */}
+            <div className="absolute z-30 right-5 bottom-36 flex flex-col gap-4">
+
+              {/* Save */}
+              <button className="w-12 h-12 rounded-full bg-black/50 border border-white/10 flex items-center justify-center">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                >
+                  <path d="M6 4H18V21L12 17L6 21Z" />
+                </svg>
+
+              </button>
+
+              {/* Share */}
+              <button className="w-12 h-12 rounded-full bg-black/50 border border-white/10 flex items-center justify-center">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                >
+                  <path d="M7 17L17 7" />
+                  <path d="M10 7H17V14" />
+                </svg>
+
+              </button>
+
+            </div>
