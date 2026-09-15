@@ -1,0 +1,297 @@
+    </div>
+
+        {/* Logo */}
+        <div className="relative z-10 flex justify-center my-10">
+          <div className="w-[135px] h-[135px] rounded-full overflow-hidden border border-red-500/20 shadow-[0_0_65px_rgba(255,48,69,0.28)]">
+            <Image
+              src="/news-teen75-logo.svg"
+              alt="News Teen75 logo"
+              width={135}
+              height={135}
+              priority
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+
+        {/* Email Form */}
+        <form
+          onSubmit={handleSubmit}
+          className="relative z-10"
+        >
+          <div
+            className={`rounded-[18px] bg-[#171a20] border transition ${
+              error
+                ? "border-red-500"
+                : "border-white/10 focus-within:border-[#ff3045]"
+            }`}
+          >
+            <div className="h-16 flex items-center px-5 gap-3">
+
+              {/* Mail Icon */}
+              <svg
+                viewBox="0 0 24 24"
+                className="w-5 h-5 text-zinc-400"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+              >
+                <rect
+                  x="3"
+                  y="5"
+                  width="18"
+                  height="14"
+                  rx="3"
+                />
+
+                <path d="M4 7L12 13L20 7" />
+              </svg>
+
+              <input
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                onBlur={() => {
+                  if (email) {
+                    setError(validateEmail(email));
+                  }
+                }}
+                maxLength={50}
+                autoComplete="email"
+                inputMode="email"
+                placeholder="Enter your email"
+                className="w-full bg-transparent outline-none text-white placeholder:text-zinc-500"
+              />
+
+              <span className="hidden text-[11px] text-zinc-600 whitespace-nowrap">
+  {email.length}/50
+</span>
+            </div>
+          </div>
+
+          {/* Error */}
+          {error && (
+            <p className="mt-2 ml-2 text-xs text-red-400">
+              {error}
+            </p>
+          )}
+
+          {/* Success */}
+          {message && (
+            <p className="mt-2 ml-2 text-xs text-green-400">
+              {message}
+            </p>
+          )}
+
+          {/* Continue Button */}
+          <button
+            type="submit"
+            disabled={!isEmailValid}
+            className={`mt-4 w-full h-16 rounded-[18px] text-lg font-semibold transition-all ${
+              isEmailValid
+                ? "bg-[#ff3045] text-white shadow-[0_12px_40px_rgba(255,48,69,0.28)] hover:bg-[#ff4053]"
+                : "bg-[#30181d] text-zinc-500 cursor-not-allowed"
+            }`}
+          >
+            Continue
+          </button>
+        </form>
+
+        {/* Divider */}
+        <div className="relative z-10 flex items-center gap-4 my-7">
+          <div className="h-px flex-1 bg-white/10" />
+
+          <span className="text-xs text-zinc-500">
+            or continue with
+          </span>
+
+          <div className="h-px flex-1 bg-white/10" />
+        </div>
+
+        {/* Social Login */}
+        <div className="relative z-10 grid grid-cols-2 gap-3">
+
+          <button
+            type="button"
+            className="h-14 rounded-[16px] bg-white text-black font-semibold flex items-center justify-center gap-3 hover:bg-zinc-200 transition"
+          >
+            <span className="w-6 h-6 rounded-full border border-zinc-300 flex items-center justify-center font-bold">
+              G
+            </span>
+
+            Google
+          </button>
+
+          <button
+            type="button"
+            className="h-14 rounded-[16px] bg-[#1877F2] text-white font-semibold flex items-center justify-center gap-3 hover:bg-[#1269d8] transition"
+          >
+            <span className="w-6 h-6 rounded-full bg-white text-[#1877F2] flex items-center justify-center font-bold">
+              f
+            </span>
+
+            Facebook
+          </button>
+
+        </div>
+
+        {/* Skip */}
+        <Link
+  href="/home"
+  className="relative z-10 mt-10 text-center text-zinc-400 font-medium hover:text-white transition"
+>
+  Skip for now
+</Link>
+
+        <p className="relative z-10 mt-4 text-center text-[11px] text-zinc-600">
+          By continuing, you agree to our Terms & Privacy Policy.
+        </p>
+
+      </div>
+    </main>
+  );
+}
+__NEWS75_FILE__
+
+mkdir -p "$ROOT/app"
+cat > "$ROOT/app/page.js" <<'__NEWS75_FILE__'
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+
+export default function Home() {
+  const [language, setLanguage] = useState("English");
+
+  const languages = ["English", "हिंदी", "Hinglish"];
+
+  return (
+    <main className="min-h-screen bg-[#050509] text-white flex items-center justify-center px-4">
+      <div className="relative w-full max-w-[430px] min-h-screen flex flex-col px-6 py-10 overflow-hidden">
+
+        {/* Red background glow */}
+        <div className="absolute -top-32 -right-24 w-72 h-72 rounded-full bg-red-600/20 blur-[100px]" />
+
+        {/* Brand */}
+        <div className="relative z-10 mt-4">
+          <h1 className="text-3xl font-bold tracking-tight">
+            News<span className="text-[#ff3045]">Teen75</span>
+          </h1>
+        </div>
+
+        {/* Heading */}
+        <div className="relative z-10 mt-12">
+          <h2 className="text-[42px] leading-[1.05] font-bold tracking-tight">
+            Your world.
+            <br />
+            Your language.
+          </h2>
+
+          <p className="mt-4 text-[15px] text-zinc-400">
+            Choose how News Teen75 speaks to you.
+          </p>
+        </div>
+
+        {/* 75 Circle */}
+        <div className="relative z-10 flex justify-center my-14">
+          <div className="relative w-[220px] h-[220px] rounded-full flex items-center justify-center bg-red-700/30 shadow-[0_0_70px_rgba(255,30,55,0.22)]">
+
+            <div className="w-[165px] h-[165px] rounded-full bg-[#151622] border border-red-500/40 flex flex-col items-center justify-center">
+              <span className="text-7xl font-light leading-none">
+                75
+              </span>
+
+              <span className="mt-2 text-xs font-bold text-[#ff3045]">
+                LIVE STORIES
+              </span>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Languages */}
+        <div className="relative z-10 grid grid-cols-3 gap-3">
+          {languages.map((item) => (
+            <button
+              key={item}
+              onClick={() => setLanguage(item)}
+              className={`h-12 rounded-full border text-sm font-medium transition ${
+                language === item
+                  ? "bg-[#ff3045] border-[#ff3045] text-white shadow-[0_8px_30px_rgba(255,48,69,0.25)]"
+                  : "bg-[#171a20] border-white/10 text-zinc-400"
+              }`}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+
+        {/* Continue button */}
+        <Link
+          href="/login"
+          className="relative z-10 mt-9 h-16 rounded-[18px] bg-[#ff3045] text-lg font-semibold shadow-[0_12px_40px_rgba(255,48,69,0.28)] flex items-center justify-center"
+        >
+          Start exploring&nbsp;&nbsp;→
+        </Link>
+
+        <p className="relative z-10 text-center mt-5 text-xs text-zinc-500">
+          You can change this anytime
+        </p>
+
+      </div>
+    </main>
+  );
+}
+__NEWS75_FILE__
+
+mkdir -p "$ROOT/app/profile"
+cat > "$ROOT/app/profile/page.js" <<'__NEWS75_FILE__'
+"use client";
+
+import { useEffect, useState } from "react";
+import BottomNav from "../components/BottomNav";
+
+export default function ProfilePage() {
+  const [name, setName] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [bio, setBio] = useState("");
+  const [language, setLanguage] = useState("English");
+  const [profileImage, setProfileImage] = useState("");
+  const [message, setMessage] = useState("");
+
+  // Load saved profile
+  useEffect(() => {
+    const savedProfile = localStorage.getItem("newsTeen75Profile");
+
+    if (savedProfile) {
+      const profile = JSON.parse(savedProfile);
+
+      setName(profile.name || "");
+      setBirthday(profile.birthday || "");
+      setBio(profile.bio || "");
+      setLanguage(profile.language || "English");
+      setProfileImage(profile.profileImage || "");
+    }
+  }, []);
+
+  function handleImageChange(event) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    // Only images
+    if (!file.type.startsWith("image/")) {
+      setMessage("Please select an image file.");
+      return;
+    }
+
+    // Max 1.5 MB
+    if (file.size > 1.5 * 1024 * 1024) {
+      setMessage("Profile photo must be under 1.5 MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      setProfileImage(reader.result
