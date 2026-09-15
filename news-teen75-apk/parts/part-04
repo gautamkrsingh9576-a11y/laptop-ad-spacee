@@ -1,0 +1,350 @@
+nded-full bg-[#171a20] border border-white/10 flex items-center justify-center text-3xl">
+              🔖
+            </div>
+
+            <h3 className="mt-6 text-xl font-semibold">
+              No saved articles
+            </h3>
+
+            <p className="mt-2 text-sm text-zinc-500">
+              Stories you save will appear here.
+            </p>
+
+            <Link
+              href="/feed"
+              className="inline-flex mt-6 px-6 py-3 rounded-full bg-[#ff3045] text-sm font-semibold"
+            >
+              Explore News
+            </Link>
+
+          </div>
+        )}
+
+        {/* Saved Articles */}
+        <div className="relative z-10 mt-8 space-y-4">
+
+          {articles.map((article) => (
+            <article
+              key={article.id}
+              className="p-4 rounded-[22px] bg-[#11141a] border border-white/10 flex gap-4"
+            >
+
+              {/* Thumbnail */}
+              <div className="shrink-0 w-[82px] h-[82px] rounded-[18px] bg-[#1a1e27] flex items-center justify-center text-3xl">
+                {article.icon}
+              </div>
+
+              {/* Article Info */}
+              <div className="flex-1 min-w-0">
+
+                <div className="flex items-center justify-between gap-2">
+
+                  <span className="text-[11px] font-semibold text-[#ff3045]">
+                    {article.category}
+                  </span>
+
+                  <button
+                    onClick={() => removeArticle(article.id)}
+                    aria-label="Remove saved article"
+                    className="shrink-0 w-8 h-8 rounded-full bg-[#1b1f27] flex items-center justify-center text-[#ff3045] hover:bg-[#ff3045] hover:text-white transition"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="w-4 h-4"
+                      fill="currentColor"
+                    >
+                      <path d="M6 3H18V21L12 17L6 21V3Z" />
+                    </svg>
+                  </button>
+
+                </div>
+
+                <h3 className="mt-2 text-[15px] leading-5 font-semibold">
+                  {article.title}
+                </h3>
+
+                <p className="mt-2 text-[11px] text-zinc-600">
+                  News Teen75 • {article.time}
+                </p>
+
+              </div>
+
+            </article>
+          ))}
+
+        </div>
+
+     {/* Bottom Navigation */}
+<BottomNav />
+
+</div>
+</main>
+);
+}
+
+     
+__NEWS75_FILE__
+
+mkdir -p "$ROOT/app/search"
+cat > "$ROOT/app/search/page.js" <<'__NEWS75_FILE__'
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import BottomNav from "../components/BottomNav";
+
+export default function SearchPage() {
+  const [query, setQuery] = useState("");
+
+  const [recentSearches, setRecentSearches] = useState([
+    "ISRO launch",
+    "India elections",
+    "Artificial intelligence",
+  ]);
+
+  const trending = [
+    "India vs Australia",
+    "Stock Market Today",
+    "AI Technology",
+    "Startup Funding",
+    "ISRO Satellite",
+  ];
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const cleanQuery = query.trim();
+
+    if (!cleanQuery) {
+      return;
+    }
+
+    if (!recentSearches.includes(cleanQuery)) {
+      setRecentSearches([
+        cleanQuery,
+        ...recentSearches,
+      ].slice(0, 5));
+    }
+
+    setQuery("");
+  }
+
+  function removeRecent(item) {
+    setRecentSearches(
+      recentSearches.filter(
+        (search) => search !== item
+      )
+    );
+  }
+
+  return (
+    <main className="min-h-screen bg-[#050509] text-white flex justify-center">
+
+      <div className="relative w-full max-w-[430px] min-h-screen px-6 pt-10 pb-28 overflow-hidden">
+
+        {/* Red glow */}
+        <div className="absolute -top-28 -right-24 w-72 h-72 rounded-full bg-red-600/20 blur-[100px]" />
+
+        {/* Header */}
+        <div className="relative z-10 flex items-center justify-between">
+
+          <Link
+            href="/home"
+            className="w-11 h-11 rounded-full bg-[#171a20] border border-white/10 flex items-center justify-center"
+          >
+            ←
+          </Link>
+
+          <h1 className="text-xl font-semibold">
+            Search
+          </h1>
+
+          <div className="w-11" />
+
+        </div>
+
+        {/* Search box */}
+        <form
+          onSubmit={handleSubmit}
+          className="relative z-10 mt-8"
+        >
+          <div className="h-16 rounded-[18px] bg-[#171a20] border border-white/10 flex items-center px-5 gap-3 focus-within:border-[#ff3045] transition">
+
+            <svg
+              viewBox="0 0 24 24"
+              className="w-5 h-5 text-zinc-400 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+            >
+              <circle cx="11" cy="11" r="6" />
+              <path d="M16 16L21 21" />
+            </svg>
+
+            <input
+              type="search"
+              value={query}
+              onChange={(e) =>
+                setQuery(e.target.value)
+              }
+              maxLength={60}
+              placeholder="Search news, topics..."
+              className="w-full bg-transparent outline-none text-white placeholder:text-zinc-500"
+            />
+
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                className="text-zinc-500 hover:text-white"
+              >
+                ×
+              </button>
+            )}
+
+          </div>
+        </form>
+
+        {/* Recent Searches */}
+        <section className="relative z-10 mt-9">
+
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">
+              Recent Searches
+            </h2>
+
+            {recentSearches.length > 0 && (
+              <button
+                onClick={() => setRecentSearches([])}
+                className="text-xs text-[#ff3045]"
+              >
+                Clear All
+              </button>
+            )}
+          </div>
+
+          <div className="mt-4 space-y-2">
+
+            {recentSearches.length === 0 && (
+              <p className="text-sm text-zinc-600 py-4">
+                No recent searches yet.
+              </p>
+            )}
+
+            {recentSearches.map((item) => (
+              <div
+                key={item}
+                className="h-14 px-4 rounded-[16px] bg-[#11141a] border border-white/5 flex items-center justify-between"
+              >
+
+                <div className="flex items-center gap-3">
+                  <span className="text-zinc-500">
+                    ◷
+                  </span>
+
+                  <span className="text-sm text-zinc-300">
+                    {item}
+                  </span>
+                </div>
+
+                <button
+                  onClick={() =>
+                    removeRecent(item)
+                  }
+                  className="text-zinc-600 hover:text-white"
+                >
+                  ×
+                </button>
+
+              </div>
+            ))}
+
+          </div>
+        </section>
+
+        {/* Trending */}
+        <section className="relative z-10 mt-9">
+
+          <div className="flex items-center gap-2">
+            <span className="text-xl">
+              🔥
+            </span>
+
+            <h2 className="text-lg font-semibold">
+              Trending Now
+            </h2>
+          </div>
+
+          <div className="mt-5 space-y-4">
+
+            {trending.map((item, index) => (
+              <button
+                key={item}
+                onClick={() => setQuery(item)}
+                className="w-full flex items-center gap-4 text-left"
+              >
+
+                <span
+                  className={`w-7 text-sm font-bold ${
+                    index < 3
+                      ? "text-[#ff3045]"
+                      : "text-zinc-600"
+                  }`}
+                >
+                  {index + 1}
+                </span>
+
+                <span className="text-sm text-zinc-300 hover:text-white transition">
+                  {item}
+                </span>
+
+              </button>
+            ))}
+
+          </div>
+
+        </section>
+
+        {/* Bottom Navigation */}
+<BottomNav />
+      </div>
+
+    </main>
+  );
+}
+__NEWS75_FILE__
+
+mkdir -p "$ROOT/app/topics"
+cat > "$ROOT/app/topics/page.js" <<'__NEWS75_FILE__'
+"use client";
+
+import Link from "next/link";
+import BottomNav from "../components/BottomNav";
+
+const topics = [
+  {
+    name: "Politics & Government",
+    description: "Policies, elections and governance",
+    icon: "🏛️",
+  },
+  {
+    name: "Crime & Breaking News",
+    description: "Important and developing stories",
+    icon: "🚨",
+  },
+  {
+    name: "Sports",
+    description: "Matches, players and tournaments",
+    icon: "🏏",
+  },
+  {
+    name: "Entertainment",
+    description: "Movies, music and culture",
+    icon: "🎬",
+  },
+  {
+    name: "Technology",
+    description: "AI, gadgets and innovation",
+    icon: "💻",
+  },
+  
