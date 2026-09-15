@@ -50,6 +50,20 @@ jobs:
           print('Feed source repaired')
           PY
 
+      - name: Create Capacitor JSON config
+        working-directory: news-teen75-generated
+        run: |
+          cat > capacitor.config.json <<'JSON'
+          {
+            "appId": "com.newsteen75.app",
+            "appName": "News Teen75",
+            "webDir": "out",
+            "server": {
+              "androidScheme": "https"
+            }
+          }
+          JSON
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
