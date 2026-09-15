@@ -1,0 +1,74 @@
+name: Build News Teen75 APK
+
+on:
+  push:
+    branches:
+      - news-teen75-apk-build
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout temporary build branch
+        uses: actions/checkout@v4
+
+      - name: Reconstruct News Teen75 setup script
+        run: |
+          cat news-teen75-apk/parts/part-* > news-teen75-apk/setup-project.sh
+          chmod +x news-teen75-apk/setup-project.sh
+          bash -n news-teen75-apk/setup-project.sh
+
+      - name: Generate News Teen75 project
+        run: bash news-teen75-apk/setup-project.sh
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        working-directory: news-teen75-generated
+        run: npm install --no-audit --no-fund
+
+      - name: Build static Next.js app
+        working-directory: news-teen75-generated
+        run: npm run build:web
+
+      - name: Create Android project
+        working-directory: news-teen75-generated
+        run: npx cap add android
+
+      - name: Sync web app to Android
+        working-directory: news-teen75-generated
+        run: npx cap sync android
+
+      - name: Build debug APK
+        working-directory: news-teen75-generated/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace
+
+      - name: Rename APK
+        run: cp news-teen75-generated/android/app/build/outputs/apk/debug/app-debug.apk NewsTeen75-debug.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NewsTeen75-APK
+          path: NewsTeen75-debug.apk
+          if-no-files-found: error
+          retention-days: 7
